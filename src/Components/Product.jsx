@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink, useParams } from 'react-router-dom'
+import Skeleton from 'react-loading-skeleton';
+import { NavLink, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addCart } from '../Redux/Action/';
+
 
 export const Product = () => {
     const { id } = useParams();
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const addProduct = (product) => {
+        dispatch(addCart(product));
+        ;
+    }
 
     useEffect(() => {
         const getProducts = async () => {
@@ -19,7 +28,19 @@ export const Product = () => {
     const Loading = () => {
         return (
             <>
-                Loading....</>
+                <div className="col-md-6">
+                    <Skeleton />
+                </div>
+                <div className="col-md-6" style={{ lineHeight: 2 }}>
+                    <Skeleton height={50} width={300} />
+                    <Skeleton height={75} />
+                    <Skeleton height={25} width={150} />
+                    <Skeleton height={50} />
+                    <Skeleton height={150} />
+                    <Skeleton height={50} width={100} />
+                    <Skeleton height={50} width={100} style={{ marginLeft: 6 }} />
+                </div>
+            </>
         )
     }
 
@@ -36,7 +57,7 @@ export const Product = () => {
                         <i className="fa fa-star"></i></p>
                     <h3 className='display-6 fw-bold my-4'>₹ {parseInt(product.price * 61.06)}</h3>
                     <p className="lead">{product.description}</p>
-                    <button className='btn btn-outline-success px-4 py-2'>Add to Cart</button>
+                    <button className='btn btn-outline-success px-4 py-2' onClick={() => addProduct(product)}>Add to Cart</button>
                     <NavLink to="/cart" className="btn btn-dark ms-2 px-3 py-2">Go to Cart</NavLink>
                 </div>
             </>
